@@ -76,7 +76,7 @@ export default function Product() {
     useEffect(async () => {
         var res = await axios.get('https://6249738f831c69c687cde72c.mockapi.io/product');
         setField({user:res.data});
-        console.log(field.user);
+//         console.log(field.user);
     }, []);
 
     return (
