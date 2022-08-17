@@ -24,7 +24,7 @@ export default function Product() {
         return errors;
     };
     const onPopulateData=async (id)=>{
-        const selectedData=field.user.filter((data)=>data.id==id)[0];
+        const selectedData=field.user.filter((data)=>data.id===id)[0];
         await setFormvalues({
         id:selectedData.id,
         productId:selectedData.productId,
@@ -34,13 +34,13 @@ export default function Product() {
     const handleSubmit = async (formData,{resetForm}) => {
         if(formvalues.id){
             //Update
-            var res=await axios.put(`https://6249738f831c69c687cde72c.mockapi.io/product/${formvalues.id}`,
+            let res=await axios.put(`https://6249738f831c69c687cde72c.mockapi.io/product/${formvalues.id}`,
                 {productId:formData.productId,
                 productName:formData.productName,
                 price:formData.price,});
                 
-            var index=field.user.findIndex(row=>row.id==res.data.id);
-            var user=[...field.user]
+            let index=field.user.findIndex(row=>row.id===res.data.id);
+            let user=[...field.user]
             user[index]=res.data;
             await setField({user})
             //formData='';
@@ -51,12 +51,12 @@ export default function Product() {
         }
         else{
             //create
-            var res=await axios.post('https://6249738f831c69c687cde72c.mockapi.io/product',
+             let res=await axios.post('https://6249738f831c69c687cde72c.mockapi.io/product',
             {productId:formData.productId,
              productName:formData.productName,
              price:formData.price,});
             
-            var user=[...field.user]
+            let user=[...field.user]
             user.push(res.data);
             await setField({user})
             formData.productId='';formData.productName='';formData.price='';
@@ -68,15 +68,18 @@ export default function Product() {
     };
     const handleDelete= async (id)=>{
         await axios.delete(`https://6249738f831c69c687cde72c.mockapi.io/product/${id}`)
-        var user=field.user.filter((row)=>row.id!=id)
+        var user=field.user.filter((row)=>row.id!==id)
         setField({user})
     }
 
 
-    useEffect(async () => {
+    useEffect(() => {
+        const products=async()=>{
         var res = await axios.get('https://6249738f831c69c687cde72c.mockapi.io/product');
         setField({user:res.data});
-//         console.log(field.user);
+        // console.log(field.user);
+        }
+        products();
     }, []);
 
     return (
